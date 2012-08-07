@@ -509,9 +509,15 @@ package org.svgweb.core
             this.loadAttribute('y');
             this.loadAttribute('rotate','rotation');
             this.loadAttribute('opacity', 'alpha', true);
-            if (this.getStyleOrAttr('pointer-events') == 'none') {
+
+            var pointerEvents:String = this.getStyleOrAttr('pointer-events');
+            if (pointerEvents == 'none') {
                 topSprite.mouseEnabled = false;
                 topSprite.mouseChildren = false;
+            }
+            else if (this is SVGGroupNode && (!pointerEvents || pointerEvents == 'auto')) {
+                topSprite.mouseEnabled = false;
+                topSprite.mouseChildren = true;
             }
             else {
                 topSprite.mouseEnabled = true;
@@ -1650,6 +1656,10 @@ package org.svgweb.core
                     if (value  == 'none') {
                         topSprite.mouseEnabled = false;
                         topSprite.mouseChildren = false;
+                    }
+                    else if (this is SVGGroupNode && (!value || value == 'auto')) {
+                        topSprite.mouseEnabled = false;
+                        topSprite.mouseChildren = true;
                     }
                     else {
                         topSprite.mouseEnabled = true;
